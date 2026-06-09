@@ -1,0 +1,69 @@
+[project]
+name = "closeread-verify"
+version = "0.1.0"
+description = "Verified dependency audit as an MCP tool: a checked-against-the-installed-version verdict any AI agent can call, not a raw scan."
+readme = "README.md"
+requires-python = ">=3.11"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [
+    { name = "Free Guy", email = "freeguy@closeread.io" }
+]
+keywords = [
+    "mcp",
+    "security",
+    "dependency-audit",
+    "sca",
+    "vulnerability",
+    "osv",
+    "agent",
+    "supply-chain",
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Security",
+    "Topic :: Software Development :: Quality Assurance",
+]
+
+# The minimal runtime closure of the MCP server + the deterministic SCA path.
+# Traced from the import graph of src/closeread/mcp_server.py:
+#   mcp_server -> ingest, schema, verifier, source_role,
+#                 scanners/{sca, credential_inventory, lockfile_npm, lockfile_polyglot},
+#                 clients/osv
+# Deliberately absent (and asserted-absent by the package tests): anthropic,
+# langgraph, langgraph-checkpoint-sqlite, weasyprint, jinja2, markdown, tree-sitter,
+# networkx, click, rich. click/rich arrive transitively via `mcp` and are not
+# declared here because this package does not import them directly.
+dependencies = [
+    "httpx>=0.28.0",      # clients/osv.py: live OSV.dev advisory lookups
+    "pydantic>=2.10.0",   # schema.py: AuditPacket / Finding models
+    "pyyaml>=6.0.2",      # scanners/lockfile_npm.py: yarn.lock + pnpm-lock.yaml parsing
+    "mcp>=1.27.2",        # mcp_server.py: FastMCP stdio server (brings click/rich transitively)
+    # tomllib is stdlib on Python >=3.11, so no tomli dependency is needed.
+]
+
+[project.scripts]
+closeread-verify = "closeread.mcp_server:main"
+
+[project.urls]
+Homepage = "https://closeread.io"
+
+[build-system]
+requires = ["uv_build>=0.10.4,<0.12.0"]
+build-backend = "uv_build"
+
+[tool.uv.build-backend]
+# src-layout: ships the `closeread` import namespace from `src/closeread/` so
+# `from closeread.mcp_server import ...` works after install. This tree is the
+# open-core runtime closure of the MCP server plus the deterministic SCA path.
+module-name = "closeread"
+module-root = "src"
+
+# Belt-and-suspenders: never ship bytecode caches even if a stray one appears.
+source-exclude = ["**/__pycache__/**", "**/*.pyc"]
+wheel-exclude = ["**/__pycache__/**", "**/*.pyc"]
