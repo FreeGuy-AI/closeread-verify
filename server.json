@@ -1,0 +1,21 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "io.github.FreeGuy-AI/closeread-verify",
+  "title": "Closeread Verify",
+  "description": "A verified dependency-audit verdict any AI agent can call over MCP, not a raw scan.",
+  "repository": {
+    "url": "https://github.com/FreeGuy-AI/closeread-verify",
+    "source": "github"
+  },
+  "version": "0.1.1",
+  "packages": [
+    {
+      "registryType": "pypi",
+      "identifier": "closeread-verify",
+      "version": "0.1.1",
+      "transport": {
+        "type": "stdio"
+      }
+    }
+  ]
+}

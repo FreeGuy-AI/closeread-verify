@@ -2,6 +2,8 @@
 
 **A verified dependency-audit verdict any AI agent can call.**
 
+<!-- mcp-name: io.github.FreeGuy-AI/closeread-verify -->
+
 A free scanner gives you raw CVEs. `closeread-verify` gives you the judgment: the
 verdict checked against the version you actually installed, the one finding that
 matters, and the exact fix. It runs as an [MCP](https://modelcontextprotocol.io)
