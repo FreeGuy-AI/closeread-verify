@@ -570,6 +570,22 @@ def extract_dependencies(ingest: IngestResult) -> list[Dependency]:
     return all_deps
 
 
+def _run_coro(coro):
+    """Run a coroutine to completion from sync code, even when an event loop is
+    already running. The MCP server executes sync tools inside its own event
+    loop, where a bare ``asyncio.run`` raises and the scan is silently dropped
+    (the audit then returns a false clean). When a loop is already running, hand
+    the coroutine to a worker thread that owns a fresh loop."""
+    try:
+        asyncio.get_running_loop()
+    except RuntimeError:
+        return asyncio.run(coro)
+    import concurrent.futures
+
+    with concurrent.futures.ThreadPoolExecutor(max_workers=1) as _ex:
+        return _ex.submit(asyncio.run, coro).result()
+
+
 async def _scan_async(
     deps: list[Dependency], *, finding_start: int = 1
 ) -> list[Finding]:
@@ -666,7 +682,7 @@ def scan(ingest: IngestResult, *, finding_start: int = 1) -> ArtifactReport:
             health_score=50,  # unknown is not good and not bad
         )
 
-    findings = asyncio.run(_scan_async(deps, finding_start=finding_start))
+    findings = _run_coro(_scan_async(deps, finding_start=finding_start))
 
     n_critical = sum(1 for f in findings if f.severity == Severity.CRITICAL)
     n_high = sum(1 for f in findings if f.severity == Severity.HIGH)

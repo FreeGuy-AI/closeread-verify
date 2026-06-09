@@ -7,12 +7,12 @@
     "url": "https://github.com/FreeGuy-AI/closeread-verify",
     "source": "github"
   },
-  "version": "0.1.1",
+  "version": "0.1.2",
   "packages": [
     {
       "registryType": "pypi",
       "identifier": "closeread-verify",
-      "version": "0.1.1",
+      "version": "0.1.2",
       "transport": {
         "type": "stdio"
       }

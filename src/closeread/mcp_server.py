@@ -326,7 +326,7 @@ def build_server():
 
     server = FastMCP("closeread-verify")
 
-    @server.tool()
+    @server.tool(name="audit_project")
     def audit_project_tool(files: dict[str, str]) -> dict:
         """Audit one or more manifest/lockfiles TOGETHER and return a VERIFIED result.
 
@@ -341,7 +341,7 @@ def build_server():
         """
         return audit_project(files, as_of=datetime.now(UTC))
 
-    @server.tool()
+    @server.tool(name="audit_dependencies")
     def audit_dependencies_tool(lockfile_content: str, filename: str) -> dict:
         """Audit a single manifest/lockfile and return a VERIFIED finding.
 
@@ -356,7 +356,7 @@ def build_server():
             lockfile_content, filename, as_of=datetime.now(UTC)
         )
 
-    @server.tool()
+    @server.tool(name="audit_repo")
     def audit_repo_tool(github_url: str) -> dict:
         """Shallow-clone a public GitHub repo and return the same VERIFIED result.
 
