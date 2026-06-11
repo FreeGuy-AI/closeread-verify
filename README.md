@@ -1,5 +1,7 @@
 # closeread-verify
 
+[![PyPI](https://img.shields.io/pypi/v/closeread-verify.svg)](https://pypi.org/project/closeread-verify/) [![Python](https://img.shields.io/pypi/pyversions/closeread-verify.svg)](https://pypi.org/project/closeread-verify/) [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE) [![MCP](https://img.shields.io/badge/MCP-server-1f6feb.svg)](https://modelcontextprotocol.io)
+
 **A verified dependency-audit verdict any AI agent can call.**
 
 <!-- mcp-name: io.github.FreeGuy-AI/closeread-verify -->
