@@ -3,6 +3,7 @@
   "name": "io.github.FreeGuy-AI/closeread-verify",
   "title": "Closeread Verify",
   "description": "A verified dependency-audit verdict any AI agent can call over MCP, not a raw scan.",
+  "websiteUrl": "https://closeread.io",
   "repository": {
     "url": "https://github.com/FreeGuy-AI/closeread-verify",
     "source": "github"
