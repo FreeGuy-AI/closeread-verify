@@ -44,6 +44,17 @@ pip install closeread-verify
 
 Python 3.11+. No API key, no account, no source access. Lockfile in, verdict out.
 
+## See it in an agent loop
+
+[`examples/agent_loop.py`](examples/agent_loop.py) is a runnable agent that uses
+closeread-verify as a pre-ship gate: it blocks on a real Flask CVE, applies the
+named fix, re-checks, and ships. Real MCP over stdio, real OSV advisories, no API
+key.
+
+```bash
+python examples/agent_loop.py
+```
+
 ## Use it as an MCP server
 
 `closeread-verify` is the stdio command that starts the server:
